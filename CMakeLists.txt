@@ -3,5 +3,5 @@ project(nanolisp)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp executable.cpp nanolisp.cpp)
+set(SOURCE_FILES src/main.cpp src/executable.cpp src/nanolisp.cpp src/lexer.cpp src/parser.cpp)
 add_executable(nanolisp ${SOURCE_FILES})
