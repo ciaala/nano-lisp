@@ -3,36 +3,25 @@
 //
 
 #include "include/interpreter.h"
+#include "include/nanolisp.h"
 #include <iostream>
-#include <sstream>
+
 namespace nl {
     void
     print_parsed(nl_expression *root) {
         cout << "INTERPRETER PARSED: ";
         root->print(cout);
         cout << endl;
-
-    }
-
-    nl_expression*
-    interpret(nl_expression *exp) {
-        if (exp->isPrimitive()) {
-            return exp;
-        } else {
-            // TODO
-            interpret(exp);
-        }
     }
 
     string
     run_interpreter(string &input) {
         nl_expression *root = parse(input);
         print_parsed(root);
+        nanolisp_runtime *runtime = nanolisp_runtime::create();
 
-        nl_expression* result = interpret(root);
+        nl_expression *result = runtime->eval(root);
 
-        std::ostringstream stream;
-        result->print(stream);
-        return stream.str();
+        return result->toString();
     }
 }

@@ -2,16 +2,21 @@
 // Created by crypt on 4/9/2016.
 //
 
+#include <sstream>
 #include "include/parser.h"
 #include "iostream"
 
 using namespace std;
 namespace nl {
-
+    string nl_expression::toString() {
+        std::ostringstream stream;
+        this->print(stream);
+        return stream.str();
+    }
     nl_string_expression::nl_string_expression(string &_value) :
             value(_value) {
-
     }
+
 
     nl_expression *parse_list(
             std::vector<lex_token *> &tokens, size_t *i) {
@@ -57,14 +62,17 @@ namespace nl {
                 root->arguments.push_back(new nl_number_expression(token->double_value));
             }
         }
-        if (root == nullptr) {
+        nl_expression *result;
+        if (root->arguments.size() == 2) {
+            // TODO de allocate old root
+            result = root->arguments[1];
+        } else {
+            result = root;
+        }
+        if (result == nullptr) {
             cout << "Unable to parse the tokens";
         }
-        if (root->arguments.size() == 2) {
-            return root->arguments[1];
-        } else {
-            return root;
-        }
+        return result;
     }
 
     nl_number_expression::nl_number_expression(double _value) : value(_value) {
@@ -74,20 +82,22 @@ namespace nl {
     nl_id_expression::nl_id_expression(string &id) : id(id) { }
 
 
+    ostream &nl_list_expression::print(ostream &os) {
+        os << *this;
+        return os;
+    }
 
-    ostream& nl_list_expression::print(ostream& os){
+    ostream &nl_id_expression::print(ostream &os) {
         os << *this;
         return os;
     }
-    ostream& nl_id_expression::print(ostream& os){
+
+    ostream &nl_number_expression::print(ostream &os) {
         os << *this;
         return os;
     }
-    ostream& nl_number_expression::print(ostream& os){
-        os << *this;
-        return os;
-    }
-    ostream& nl_string_expression::print(ostream& os){
+
+    ostream &nl_string_expression::print(ostream &os) {
         os << *this;
         return os;
     }
@@ -104,12 +114,12 @@ ostream &operator<<(ostream &os, const nl::nl_string_expression &exp) {
     return os;
 }
 
-ostream &operator<<(ostream &os, const nl::nl_number_expression &exp){
+ostream &operator<<(ostream &os, const nl::nl_number_expression &exp) {
     os << "NUMBER(" << exp.value << ")";
     return os;
 }
 
-ostream& operator<<(ostream& os, const nl::nl_list_expression& exp){
+ostream &operator<<(ostream &os, const nl::nl_list_expression &exp) {
     os << "(";
     for (auto item: exp.arguments) {
         item->print(os);
@@ -117,7 +127,8 @@ ostream& operator<<(ostream& os, const nl::nl_list_expression& exp){
     os << ")";
     return os;
 }
-ostream& operator<<(ostream& os, const nl::nl_expression& exp){
+
+ostream &operator<<(ostream &os, const nl::nl_expression &exp) {
     return os;
 
 }

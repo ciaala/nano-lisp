@@ -45,13 +45,13 @@ namespace nl {
     lexer_number(string &input, size_t start) {
         size_t i = start + 1;
         char c = input.at(i);
-        while (isnumber(c)) {
+        while (isdigit(c)) {
             i++;
             c = input.at(i);
         }
         if (c == '.') {
             i++;
-            while (isnumber(c)) {
+            while (isdigit(c)) {
                 i++;
                 c = input.at(i);
             }

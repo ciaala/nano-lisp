@@ -21,6 +21,8 @@ namespace nl {
     public:
         virtual ostream &print(ostream &os) =0 ;
         virtual bool isPrimitive() = 0 ;
+
+        string toString();
     };
 
     class nl_number_expression : public nl_expression {
