@@ -34,9 +34,9 @@ namespace nl {
 
         nl_number_expression(double _value);
 
-        ostream &print(ostream &os);
+        ostream &print(ostream &os) override;
 
-        inline bool isPrimitive() { return true; }
+        inline bool isPrimitive() override { return true; }
 
         virtual string valueToString() override;
 
@@ -47,11 +47,11 @@ namespace nl {
     public:
         string id;
 
-        ostream &print(ostream &os);
+        ostream &print(ostream &os) override;
 
         nl_id_expression(string &_id);
 
-        inline bool isPrimitive() { return false; }
+        inline bool isPrimitive() override { return false; }
 
         virtual string valueToString() override;
 
@@ -61,11 +61,11 @@ namespace nl {
     public:
         string value;
 
-        ostream &print(ostream &os);
+        ostream &print(ostream &os) override;
 
         nl_string_expression(string &_value);
 
-        inline bool isPrimitive() { return true; };
+        inline bool isPrimitive() override { return true; };
 
         virtual string valueToString() override;
 
@@ -75,10 +75,10 @@ namespace nl {
     class nl_list_expression : public nl_expression {
 
     public:
-        inline bool isPrimitive() { return false; };
+        inline bool isPrimitive() override { return false; };
         vector<nl_expression *> arguments;
 
-        ostream &print(ostream &os);
+        ostream &print(ostream &os) override;
 
         inline nl_list_expression *addArgId(string identifier) {
             this->arguments.push_back(new nl_id_expression(identifier));
