@@ -35,9 +35,7 @@ namespace nl {
             std::ostringstream stream;
             for (auto item: arguments) {
                 nl_expression *exp = runtime->eval(item);
-                exp->print(cout);
-
-                exp->print(stream);
+                stream << exp->valueToString();
             }
             string value = stream.str();
             return new nl_string_expression(value);

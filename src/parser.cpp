@@ -13,6 +13,12 @@ namespace nl {
         this->print(stream);
         return stream.str();
     }
+
+    string nl_expression::valueToString() {
+        return "";
+    }
+
+
     nl_string_expression::nl_string_expression(string &_value) :
             value(_value) {
     }
@@ -92,15 +98,33 @@ namespace nl {
         return os;
     }
 
+    string nl_id_expression::valueToString() {
+        stringstream stream;
+        stream << "ID(" << this->id << ")";
+        return stream.str();
+    }
+
     ostream &nl_number_expression::print(ostream &os) {
         os << *this;
         return os;
     }
 
+    string nl_number_expression::valueToString() {
+        stringstream stream;
+        stream << this->value;
+        return stream.str();
+    }
+
+
     ostream &nl_string_expression::print(ostream &os) {
         os << *this;
         return os;
     }
+
+    string nl_string_expression::valueToString() {
+        return this->value;
+    }
+
 
 }
 
