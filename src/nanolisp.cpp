@@ -1,6 +1,7 @@
 //
 // Created by crypt on 4/8/2016.
 //
+#define IFDEBUG(...)
 
 #include "include/nanolisp.h"
 #include <iostream>
@@ -31,11 +32,11 @@ namespace nl {
         nl_print_runtime(const string &_id) : nl_runtime(_id) { }
 
         virtual nl_expression *run(nanolisp_runtime *runtime, vector<nl_expression *> arguments) override {
-            cout << "PRINT: " << flush;
+            IFDEBUG(cout << "PRINT: " << flush);
             std::ostringstream stream;
             for (auto item: arguments) {
                 nl_expression *exp = runtime->eval(item);
-                stream << exp->valueToString();
+                stream << exp->valueToString() << " ";
             }
             string value = stream.str();
             return new nl_string_expression(value);
@@ -72,17 +73,17 @@ namespace nl {
         nl_sum_runtime(const string &_id) : nl_runtime(_id) { }
 
         virtual nl_expression *run(nanolisp_runtime *runtime, vector<nl_expression *> arguments) override {
-            cout << "SUM: " << flush;
+            IFDEBUG(cout << "SUM: " << flush);
 
 
             double value = 0;
             if (arguments.size() >= 2) {
-                cout << value << " ";
+                IFDEBUG(cout << value << " ");
                 for (auto item: arguments) {
                     nl_expression *argument = runtime->eval(item);
                     nl_number_expression *operand = dynamic_cast<nl_number_expression *>(argument);
                     if (operand != nullptr) {
-                        cout << " " << value;
+                        IFDEBUG(cout << " " << value);
                         value += operand->value;
 
                     } else {
@@ -91,20 +92,19 @@ namespace nl {
                     }
                 }
                 nl_number_expression *result = new nl_number_expression(value);
-                result->print(cout);
-                cout << endl << flush;
+                IFDEBUG(result->print(cout));
+                IFDEBUG(cout << endl << flush);
                 return result;
             }
             return nullptr;
         }
-
-
     };
 
     class nl_doall_runtime : public nl_runtime {
 
     public:
         nl_doall_runtime(const string &_id) : nl_runtime(_id) { }
+
     public:
         virtual nl_expression *run(nanolisp_runtime *runtime, vector<nl_expression *> arguments) override {
             nl_expression *result = nullptr;
@@ -132,9 +132,9 @@ namespace nl {
     nl_expression *nanolisp_runtime::get(string identifier) {
 
         nl_expression *result = this->symbols[identifier];
-        cout << "SYMBOL: " << identifier << '=';
-        result->print(cout);
-        cout << endl << flush;
+        IFDEBUG(cout << "SYMBOL: " << identifier << '=');
+        IFDEBUG(result->print(cout));
+        IFDEBUG(cout << endl << flush);
         return result;
     }
 
@@ -155,9 +155,9 @@ namespace nl {
                     auto first = list_expression->arguments.begin() + 1;
                     auto last = list_expression->arguments.end();
                     auto sub_arguments = vector<nl_expression *>(first, last);
-                    cout << "running " << fun->id << " ";
-                    this->print_arguments(sub_arguments);
-                    cout << endl;
+                    IFDEBUG(cout << "running " << fun->id << " ");
+                    IFDEBUG(this->print_arguments(sub_arguments));
+                    IFDEBUG(cout << endl);
                     return fun->run(this, sub_arguments);
                 } else {
                     cout << "Unable to recognize a function for symbol " << first_expression->toString() << endl;
@@ -169,7 +169,7 @@ namespace nl {
                     nl_expression *result = this->get(id_expression->id);
                     if (result == nullptr) {
                         cout << "Unable to recognize a symbol " << expression->toString() << endl;
-                        this->print_symbols();
+                        IFDEBUG(this->print_symbols());
                         return nullptr;
                     } else {
                         return result;
@@ -186,7 +186,7 @@ namespace nl {
 
         nanolisp_runtime *runtime = new nanolisp_runtime();
 
-        runtime->print_symbols();
+        IFDEBUG(runtime->print_symbols());
         return runtime;
     }
 
