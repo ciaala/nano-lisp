@@ -19,37 +19,56 @@ namespace nl {
      */
     class nl_expression {
     public:
-        virtual ostream &print(ostream &os) =0 ;
-        virtual bool isPrimitive() = 0 ;
+        virtual ostream &print(ostream &os) = 0;
+
+        virtual bool isPrimitive() = 0;
 
         string toString();
+
+        virtual string valueToString();
     };
 
     class nl_number_expression : public nl_expression {
     public :
         double value;
+
         nl_number_expression(double _value);
+
         ostream &print(ostream &os);
 
-        inline bool isPrimitive() { return true; };
+        inline bool isPrimitive() { return true; }
+
+        virtual string valueToString() override;
+
     };
 
 
     class nl_id_expression : public nl_expression {
     public:
         string id;
+
         ostream &print(ostream &os);
+
         nl_id_expression(string &_id);
-        inline bool isPrimitive() { return false; };
+
+        inline bool isPrimitive() { return false; }
+
+        virtual string valueToString() override;
+
     };
 
     class nl_string_expression : public nl_expression {
     public:
         string value;
-        ostream& print(ostream& os);
+
+        ostream &print(ostream &os);
+
         nl_string_expression(string &_value);
 
         inline bool isPrimitive() { return true; };
+
+        virtual string valueToString() override;
+
     };
 
 
@@ -58,7 +77,9 @@ namespace nl {
     public:
         inline bool isPrimitive() { return false; };
         vector<nl_expression *> arguments;
-        ostream& print(ostream& os);
+
+        ostream &print(ostream &os);
+
         inline nl_list_expression *addArgId(string identifier) {
             this->arguments.push_back(new nl_id_expression(identifier));
             return this;
@@ -83,6 +104,7 @@ namespace nl {
             nl_list_expression *expression = new nl_list_expression;
             return expression;
         }
+
     };
 
     nl_expression *parse(string &input);
