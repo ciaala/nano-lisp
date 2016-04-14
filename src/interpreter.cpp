@@ -22,6 +22,6 @@ namespace nl {
 
         nl_expression *result = runtime->eval(root);
 
-        return result->toString();
+        return result->valueToString();
     }
 }

@@ -33,5 +33,23 @@ test_interpreter_main() {
 
     output = "22";
     check_interpreter(program, output);
+
+
+    program = "(def a 5)"
+            "(def b 6)"
+            "(print (sum a b (sum a b) (sum a 1 2 3 4 5)))";
+
+    output = "42";
+    check_interpreter(program, output);
+
+    // SHOULD FAIL
+
+    program = "(def a 5)"
+            "(def b 6)"
+            /* Missing 1 paranthesis */
+            "(print (sum a b (sum a b) (sum a 1 2 3 4 5))";
+
+    output = "42";
+    check_interpreter(program, output);
     return 0;
 }
