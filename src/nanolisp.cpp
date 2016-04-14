@@ -31,9 +31,12 @@ namespace nl {
         nl_print_runtime(const string &_id) : nl_runtime(_id) { }
 
         virtual nl_expression *run(nanolisp_runtime *runtime, vector<nl_expression *> arguments) override {
+            cout << "PRINT: " << flush;
             std::ostringstream stream;
             for (auto item: arguments) {
                 nl_expression *exp = runtime->eval(item);
+                exp->print(cout);
+
                 exp->print(stream);
             }
             string value = stream.str();
@@ -71,18 +74,27 @@ namespace nl {
         nl_sum_runtime(const string &_id) : nl_runtime(_id) { }
 
         virtual nl_expression *run(nanolisp_runtime *runtime, vector<nl_expression *> arguments) override {
-            nl_number_expression *result = new nl_number_expression(0);
+            cout << "SUM: " << flush;
+
+
+            double value = 0;
             if (arguments.size() >= 2) {
+                cout << value << " ";
                 for (auto item: arguments) {
                     nl_expression *argument = runtime->eval(item);
                     nl_number_expression *operand = dynamic_cast<nl_number_expression *>(argument);
                     if (operand != nullptr) {
-                        result->value += operand->value;
+                        cout << " " << value;
+                        value += operand->value;
+
                     } else {
                         cout << "Unexpected expression: " << argument->toString();
                         return nullptr;
                     }
                 }
+                nl_number_expression *result = new nl_number_expression(value);
+                result->print(cout);
+                cout << endl << flush;
                 return result;
             }
             return nullptr;
@@ -95,8 +107,6 @@ namespace nl {
 
     public:
         nl_doall_runtime(const string &_id) : nl_runtime(_id) { }
-
-
     public:
         virtual nl_expression *run(nanolisp_runtime *runtime, vector<nl_expression *> arguments) override {
             nl_expression *result = nullptr;
@@ -110,10 +120,10 @@ namespace nl {
     };
 
     nanolisp_runtime::nanolisp_runtime() {
+        this->add(new nl_doall_runtime("doall"));
         this->add(new nl_print_runtime("print"));
         this->add(new nl_def_runtime("def"));
-        this->add(new nl_doall_runtime("doall"));
-        this->add(new nl_doall_runtime("sum"));
+        this->add(new nl_sum_runtime("sum"));
     }
 
     void nanolisp_runtime::add(nl_runtime *runtime) {
@@ -122,7 +132,12 @@ namespace nl {
     }
 
     nl_expression *nanolisp_runtime::get(string identifier) {
-        return this->symbols[identifier];
+
+        nl_expression *result = this->symbols[identifier];
+        cout << "SYMBOL: " << identifier << '=';
+        result->print(cout);
+        cout << endl << flush;
+        return result;
     }
 
     void nanolisp_runtime::add(string identifier, nl_expression *expression) {
@@ -138,12 +153,13 @@ namespace nl {
                 nl_expression *first_expression = this->eval(list_expression->arguments[0]);
                 nl_runtime *fun = dynamic_cast<nl_runtime *>( first_expression);
                 if (fun != nullptr) {
-                    cout << "running " << fun->id << endl;
+
                     auto first = list_expression->arguments.begin() + 1;
                     auto last = list_expression->arguments.end();
                     auto sub_arguments = vector<nl_expression *>(first, last);
-
-
+                    cout << "running " << fun->id << " ";
+                    this->print_arguments(sub_arguments);
+                    cout << endl;
                     return fun->run(this, sub_arguments);
                 } else {
                     cout << "Unable to recognize a function for symbol " << first_expression->toString() << endl;
@@ -186,4 +202,10 @@ namespace nl {
 
     }
 
+    void nanolisp_runtime::print_arguments(vector<nl_expression *> arguments) {
+        for (auto item: arguments) {
+            item->print(cout);
+            cout << " ";
+        }
+    }
 }

@@ -45,6 +45,8 @@ namespace nl {
         nl_expression *eval(nl_expression *expression);
 
         void print_symbols();
+
+        void print_arguments(vector<nl_expression *> arguments);
     };
 
 
