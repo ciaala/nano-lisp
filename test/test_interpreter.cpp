@@ -6,14 +6,26 @@
 #include <iostream>
 
 using namespace std;
+
+
+string trim(string& str)
+{
+    size_t first = str.find_first_not_of(' ');
+    if (first == string::npos)
+        return "";
+    size_t last = str.find_last_not_of(' ');
+    return str.substr(first, (last-first+1));
+}
+
 bool
 check_interpreter(string &program, string &expected) {
-    string result = nl::run_interpreter(program);
-    if (result != expected) {
+    string result =nl::run_interpreter(program);
+    result = trim(result);
+    if (result.compare(expected) != 0) {
         cout << "Interpretation has failed. Expected " << expected << " received " << result << endl;
         return false;
     } else {
-        cout << program << " interpreted !!!";
+        cout << program << " interpreted correctly !!!" << std::endl;
         return true;
     }
 }
@@ -46,7 +58,7 @@ test_interpreter_main() {
 
     program = "(def a 5)"
             "(def b 6)"
-            /* Missing 1 paranthesis */
+            /* Missing 1 parenthesis */
             "(print (sum a b (sum a b) (sum a 1 2 3 4 5))";
 
     output = "42";

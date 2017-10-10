@@ -54,48 +54,48 @@ int test_lexer_main() {
     vector<nl::lex_token *> result{};
     //check_lexer(true, "", vector<nl::lex_token> {});
     result = vector<nl::lex_token *>{nl::lex_token::create_lp(),
-                                     nl::lex_token::create_string("ciao"),
+                                     nl::lex_token::create_string("falcon"),
                                      nl::lex_token::create_rp()};
-    check_lexer(true, "(\"ciao\")", result);
+    check_lexer(true, "(\"falcon\")", result);
 
     result = vector<nl::lex_token *>{nl::lex_token::create_lp(),
-                                     nl::lex_token::create_string("ciao"),
-                                     nl::lex_token::create_string("nonna"),
+                                     nl::lex_token::create_string("falcon"),
+                                     nl::lex_token::create_string("space-x"),
                                      nl::lex_token::create_rp()};
 
-    check_lexer(true, "(\"ciao\"\"nonna\")", result);
+    check_lexer(true, "(\"falcon\"\"space-x\")", result);
 
 
     result = vector<nl::lex_token *>{nl::lex_token::create_lp(),
-                                     nl::lex_token::create_string("ciao"),
-                                     nl::lex_token::create_string("nonna"),
+                                     nl::lex_token::create_string("falcon"),
+                                     nl::lex_token::create_string("space-x"),
                                      nl::lex_token::create_number(123451),
                                      nl::lex_token::create_rp()};
 
-    check_lexer(true, "(\"ciao\"\"nonna\"   123451)", result);
+    check_lexer(true, "(\"falcon\"\"space-x\"   123451)", result);
 
     result = vector<nl::lex_token *>{nl::lex_token::create_lp(),
                                      nl::lex_token::create_id("Hello"),
                                      nl::lex_token::create_id("World"),
 
-                                     nl::lex_token::create_string("ciao"),
-                                     nl::lex_token::create_string("nonna"),
+                                     nl::lex_token::create_string("falcon"),
+                                     nl::lex_token::create_string("space-x"),
                                      nl::lex_token::create_number(123451),
                                      nl::lex_token::create_rp()};
 
-    check_lexer(true, "(Hello World \"ciao\"\"nonna\"   123451)", result);
+    check_lexer(true, "(Hello World \"falcon\"\"space-x\"   123451)", result);
 
 
     result = vector<nl::lex_token *>{nl::lex_token::create_lp(),
                                      nl::lex_token::create_id("Hello,"),
                                      nl::lex_token::create_id("World!"),
 
-                                     nl::lex_token::create_string("ciao"),
-                                     nl::lex_token::create_string("nonna"),
+                                     nl::lex_token::create_string("falcon"),
+                                     nl::lex_token::create_string("space-x"),
                                      nl::lex_token::create_number(123451),
                                      nl::lex_token::create_rp()};
 
-    check_lexer(false, "(Hello, World! \"ciao\"\"nonna\"   123451)", result);
+    check_lexer(false, "(Hello, World! \"falcon\"\"space-x\"   123451)", result);
 
     return 0;
 }

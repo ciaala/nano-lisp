@@ -105,8 +105,8 @@ namespace nl {
             } else if (isblank(c)) {
                 // nothing to do
             } else {
-                cout << "unrecognized character " << c << ". found in input at " << i <<endl;
-
+                cout << "unrecognized character '" << c << "' found in input at position: " << i << endl;
+                cout << "####" << input << "####" << input.substr(0, i) << "^" << c << "^" << input.substr(i+1, input.length()) << "####" << endl;
             }
         }
     };
