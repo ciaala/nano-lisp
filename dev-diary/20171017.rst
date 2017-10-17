@@ -1,0 +1,18 @@
+Plan for the 17th of October, 2017
+##################################
+
+These are the task for tonight
+
+- Incorporate valgrind into the toolchain
+- Incorporate google_test
+- Look for a CI (continuous integration) service that run remotely
+- Design a Simple GUI for the interpreter that runs on QT5
+
+
+Diary
+=====
+
+Installation dependency check
+- valgrind [checked]
+- google test [installed]
+- qt5 [?]

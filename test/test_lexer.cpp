@@ -1,70 +1,35 @@
 //
-// Created by Francesco Fiduccia on 11/04/16.
+// Created by crypt on 17/10/17.
 //
-
-#include "include/test_lexer.h"
-#include <iostream>
+#include "lexer.h"
+#include "checkers.hpp"
+#include "gtest/gtest.h"
 
 using namespace std;
+vector<nl::lex_token *> result{};
 
-bool
-nltokenBinaryPredicate(const nl::lex_token *first, const nl::lex_token *second) {
-    return *first == *second;
-}
+TEST(LEXER, PARENTHESIS_STRING
+) {
 
-bool
-check_lexer(bool match, string input, vector<nl::lex_token *> &expected) {
-    vector<nl::lex_token *> result;
-    nl::lexical(input, result);
-
-    if (match && result.size() != expected.size()) {
-        cout << "Expected and result doesn't have the same length" << endl;
-        for (auto item : result) {
-            cout << nl::lex_symbols.at(item->symbol) << " ";
-        }
-        cout << endl << endl;
-        return false;
-    } else if ((!match) ||
-               (!equal(result.begin(), result.end(), expected.begin(), expected.end(), nltokenBinaryPredicate))) {
-
-        auto diff = mismatch(result.begin(), result.end(), expected.begin(), expected.end());
-        if (*diff.first != *diff.second) {
-            cout << nl::lex_symbols.at((*diff.first)->symbol) << " != " <<
-            nl::lex_symbols.at((*diff.second)->symbol);
-        }
-        cout << endl;
-        for (auto item : result) {
-            cout << nl::lex_symbols.at(item->symbol) << " ";
-        }
-        cout << endl << endl;
-        return false;
-    } else {
-        cout << "String:" << endl << '\t' << input << endl << "matches as:" << endl << "\t";
-        for (auto item : expected) {
-            cout << nl::lex_symbols.at(item->symbol) << " ";
-        }
-        cout << endl << endl;
-        return true;
-    }
-
-}
-
-int test_lexer_main() {
-
-    vector<nl::lex_token *> result{};
-    //check_lexer(true, "", vector<nl::lex_token> {});
     result = vector<nl::lex_token *>{nl::lex_token::create_lp(),
                                      nl::lex_token::create_string("falcon"),
                                      nl::lex_token::create_rp()};
-    check_lexer(true, "(\"falcon\")", result);
+    EXPECT_TRUE(check_lexer(true, "(\"falcon\")", result));
+}
 
+TEST(LEXER, PARENTHESIS_TWO_STRINGS
+) {
     result = vector<nl::lex_token *>{nl::lex_token::create_lp(),
                                      nl::lex_token::create_string("falcon"),
                                      nl::lex_token::create_string("space-x"),
                                      nl::lex_token::create_rp()};
 
-    check_lexer(true, "(\"falcon\"\"space-x\")", result);
+    EXPECT_TRUE(check_lexer(true, "(\"falcon\"\"space-x\")", result));
+}
 
+
+TEST(LEXER, PARENTHESIS_TWO_STRINGS_ONE_NUMBER
+) {
 
     result = vector<nl::lex_token *>{nl::lex_token::create_lp(),
                                      nl::lex_token::create_string("falcon"),
@@ -72,7 +37,11 @@ int test_lexer_main() {
                                      nl::lex_token::create_number(123451),
                                      nl::lex_token::create_rp()};
 
-    check_lexer(true, "(\"falcon\"\"space-x\"   123451)", result);
+    EXPECT_TRUE(check_lexer(true, "(\"falcon\"\"space-x\"   123451)", result));
+}
+
+TEST(LEXER, PARANTHESIS_TWO_SYMBOLS_TWO_STRINGS_NUMBER
+) {
 
     result = vector<nl::lex_token *>{nl::lex_token::create_lp(),
                                      nl::lex_token::create_id("Hello"),
@@ -83,19 +52,24 @@ int test_lexer_main() {
                                      nl::lex_token::create_number(123451),
                                      nl::lex_token::create_rp()};
 
-    check_lexer(true, "(Hello World \"falcon\"\"space-x\"   123451)", result);
+    EXPECT_TRUE(check_lexer(true, "(Hello World \"falcon\"\"space-x\"   123451)", result));
+}
 
-
+TEST(LEXER, PARANTHESIS_TWO_LINE_STRING
+) {
     result = vector<nl::lex_token *>{nl::lex_token::create_lp(),
-                                     nl::lex_token::create_id("Hello,"),
-                                     nl::lex_token::create_id("World!"),
-
-                                     nl::lex_token::create_string("falcon"),
-                                     nl::lex_token::create_string("space-x"),
-                                     nl::lex_token::create_number(123451),
+                                     nl::lex_token::create_string("falcon\r\nsuper hero"),
                                      nl::lex_token::create_rp()};
+    EXPECT_TRUE(check_lexer(true, "(\"falcon\r\nsuper hero\")", result));
 
-    check_lexer(false, "(Hello, World! \"falcon\"\"space-x\"   123451)", result);
+}
 
-    return 0;
+
+TEST(LEXER, PARANTHESIS_MULTIPLE_LINES_STRING
+) {
+    result = vector<nl::lex_token *>{nl::lex_token::create_lp(),
+                                     nl::lex_token::create_string("falcon\r\nsuper\r\nhero"),
+                                     nl::lex_token::create_rp()};
+    EXPECT_TRUE(check_lexer(true, "(\"falcon\r\nsuper\r\nhero\")", result));
+
 }
