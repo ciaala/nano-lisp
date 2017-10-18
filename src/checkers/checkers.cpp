@@ -46,3 +46,39 @@ check_lexer(bool match, string input, vector<nl::lex_token *> &expected) {
     }
 
 }
+
+
+string trim(string &str) {
+    size_t first = str.find_first_not_of(' ');
+    if (first == string::npos)
+        return "";
+    size_t last = str.find_last_not_of(' ');
+    return str.substr(first, (last - first + 1));
+}
+
+bool
+check_interpreter(string &program, string &expected) {
+    string result = nl::run_interpreter(program);
+    result = trim(result);
+    if (result.compare(expected) != 0) {
+        cout << "Interpretation has failed. Expected " << expected << " received " << result << endl;
+        return false;
+    } else {
+        cout << program << " interpreted correctly !!!" << std::endl;
+        return true;
+    }
+}
+
+
+bool check_parser(string input,
+                  vector<nl::lex_token *> &expected_lexer,
+                  nl::nl_expression *expected_parser) {
+    if (check_lexer(true, input, expected_lexer)) {
+        nl::nl_expression *result = nl::parse(input);
+        cout << "print parsed: ";
+        result->print(cout);
+        cout << endl;
+        return true;
+    }
+    return false;
+}

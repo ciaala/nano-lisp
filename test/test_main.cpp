@@ -1,16 +1,9 @@
 //
 // Created by Francesco Fiduccia on 13/04/16.
 //
-#include <iostream>
-extern int test_lexer_main();
-extern int test_parser_main();
-extern int test_interpreter_main();
-using  namespace std;
+#include "gtest/gtest.h"
 
-int main() {
-    test_lexer_main();
-    cout << endl;
-    test_parser_main();
-    cout << endl;
-    test_interpreter_main();
+int main(int argc, char **argv) {
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }

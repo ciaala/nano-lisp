@@ -11,12 +11,19 @@
 //
 #include <string>
 #include <vector>
-#include "../../src/include/lexer.h"
+#include "interpreter.h"
 
 
-
-using namespace std;
 bool
-check_lexer(bool match, string input, vector<nl::lex_token *> &expected);
+check_lexer(bool match, std::string input, std::vector<nl::lex_token *> &expected);
+
+bool
+check_parser(string input,
+                  std::vector<nl::lex_token *> &expected_lexer,
+                  nl::nl_expression *expected_parser);
+
+
+bool
+check_interpreter(std::string &program, std::string &expected);
 
 #endif //NANOLISP_CHECKERS_HPP

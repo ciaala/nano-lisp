@@ -19,39 +19,30 @@ set(SOURCE_FILES
         src/include/interpreter.h
         src/include/nanolisp.h
         )
-SET(nanolisp         src/main.cpp
-        )
-set(TEST_FILES
-        test/include/test_interpreter.h
-        test/test_lexer.cpp
-        test/test_parser.cpp
+SET(nanolisp src/main.cpp)
 
-        test/test_main.cpp
-        test/test_interpreter.cpp
-        src/checkers/checkers.cpp
-        src/include/checkers.hpp
-        )
 
 set(GTEST_FILES
-        test/test_startup.cpp
         test/test_lexer.cpp
+        test/test_parser.cpp
+        test/test_interpreter.cpp
+        test/test_main.cpp
         )
 
 add_library(nanolisp-lib ${SOURCE_FILES})
+target_include_directories(nanolisp-lib INTERFACE src/include)
 
-add_executable(nanolisp ${SOURCE_FILES} ${TEST_FILES})
 
-
+add_executable(nanolisp ${SOURCE_FILES})
 target_include_directories(nanolisp
         PUBLIC src/include)
-target_include_directories(nanolisp-lib INTERFACE src/include)
+
+
 add_executable(nanolisp-test ${GTEST_FILES})
-
 target_link_libraries(nanolisp-test gtest nanolisp-lib)
-
 target_include_directories(nanolisp-test
         INTERFACE gtest
         PUBLIC test/include
         PUBLIC src/include)
 
-add_test(${GTEST_FILES} nanolisp-test )
+add_test(${GTEST_FILES} nanolisp-test)

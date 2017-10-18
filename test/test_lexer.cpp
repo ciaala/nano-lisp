@@ -8,8 +8,7 @@
 using namespace std;
 vector<nl::lex_token *> result{};
 
-TEST(LEXER, PARENTHESIS_STRING
-) {
+TEST(LEXER, PARENTHESIS_STRING) {
 
     result = vector<nl::lex_token *>{nl::lex_token::create_lp(),
                                      nl::lex_token::create_string("falcon"),
@@ -17,8 +16,7 @@ TEST(LEXER, PARENTHESIS_STRING
     EXPECT_TRUE(check_lexer(true, "(\"falcon\")", result));
 }
 
-TEST(LEXER, PARENTHESIS_TWO_STRINGS
-) {
+TEST(LEXER, PARENTHESIS_TWO_STRINGS) {
     result = vector<nl::lex_token *>{nl::lex_token::create_lp(),
                                      nl::lex_token::create_string("falcon"),
                                      nl::lex_token::create_string("space-x"),
@@ -28,8 +26,7 @@ TEST(LEXER, PARENTHESIS_TWO_STRINGS
 }
 
 
-TEST(LEXER, PARENTHESIS_TWO_STRINGS_ONE_NUMBER
-) {
+TEST(LEXER, PARENTHESIS_TWO_STRINGS_ONE_NUMBER) {
 
     result = vector<nl::lex_token *>{nl::lex_token::create_lp(),
                                      nl::lex_token::create_string("falcon"),
@@ -40,8 +37,7 @@ TEST(LEXER, PARENTHESIS_TWO_STRINGS_ONE_NUMBER
     EXPECT_TRUE(check_lexer(true, "(\"falcon\"\"space-x\"   123451)", result));
 }
 
-TEST(LEXER, PARANTHESIS_TWO_SYMBOLS_TWO_STRINGS_NUMBER
-) {
+TEST(LEXER, PARANTHESIS_TWO_SYMBOLS_TWO_STRINGS_NUMBER) {
 
     result = vector<nl::lex_token *>{nl::lex_token::create_lp(),
                                      nl::lex_token::create_id("Hello"),
@@ -55,8 +51,7 @@ TEST(LEXER, PARANTHESIS_TWO_SYMBOLS_TWO_STRINGS_NUMBER
     EXPECT_TRUE(check_lexer(true, "(Hello World \"falcon\"\"space-x\"   123451)", result));
 }
 
-TEST(LEXER, PARANTHESIS_TWO_LINE_STRING
-) {
+TEST(LEXER, PARANTHESIS_TWO_LINE_STRING) {
     result = vector<nl::lex_token *>{nl::lex_token::create_lp(),
                                      nl::lex_token::create_string("falcon\r\nsuper hero"),
                                      nl::lex_token::create_rp()};
@@ -65,8 +60,7 @@ TEST(LEXER, PARANTHESIS_TWO_LINE_STRING
 }
 
 
-TEST(LEXER, PARANTHESIS_MULTIPLE_LINES_STRING
-) {
+TEST(LEXER, PARANTHESIS_MULTIPLE_LINES_STRING) {
     result = vector<nl::lex_token *>{nl::lex_token::create_lp(),
                                      nl::lex_token::create_string("falcon\r\nsuper\r\nhero"),
                                      nl::lex_token::create_rp()};
