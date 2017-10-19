@@ -143,7 +143,9 @@ namespace nl {
     }
 
     nl_expression *nanolisp_runtime::eval(nl_expression *expression) {
-        if (expression->isPrimitive()) {
+        if (expression != nullptr) {
+            return nullptr;
+        } else if (expression->isPrimitive()) {
             return expression;
         } else {
             nl_list_expression *list_expression = dynamic_cast<nl_list_expression *>(expression);

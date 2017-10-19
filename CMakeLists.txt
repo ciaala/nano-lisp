@@ -19,7 +19,7 @@ set(SOURCE_FILES
         src/include/interpreter.h
         src/include/nanolisp.h
         )
-SET(nanolisp src/main.cpp)
+set(REPL_SOURCE_FILES src/main.cpp)
 
 
 set(GTEST_FILES
@@ -33,9 +33,10 @@ add_library(nanolisp-lib ${SOURCE_FILES})
 target_include_directories(nanolisp-lib INTERFACE src/include)
 
 
-add_executable(nanolisp ${SOURCE_FILES})
+add_executable(nanolisp ${REPL_SOURCE_FILES})
 target_include_directories(nanolisp
         PUBLIC src/include)
+target_link_libraries(nanolisp nanolisp-lib)
 
 
 add_executable(nanolisp-test ${GTEST_FILES})

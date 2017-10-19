@@ -21,7 +21,10 @@ namespace nl {
         nanolisp_runtime *runtime = nanolisp_runtime::create();
 
         nl_expression *result = runtime->eval(root);
-
-        return result->valueToString();
+        if ( result != nullptr) {
+            return result->valueToString();
+        } else {
+            return "[nullptr]";
+        }
     }
 }

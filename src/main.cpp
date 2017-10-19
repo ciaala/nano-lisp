@@ -2,6 +2,8 @@
 #include <sstream>
 #include <vector>
 #include <unordered_map>
+#include "nanolisp.h"
+#include "interpreter.h"
 /*
 using namespace std;
 
@@ -79,15 +81,6 @@ namespace nl {
             specialForms.insert(nlspecialform);
         }
     };
-
-    void version() {
-        cout << info::executable << " is " << info::fullname << info::version << endl;
-    }
-
-    void help(int argc, char **argv) {
-        version();
-    }
-
     string eval_tokens(nlstack &stack, vector<string> &tokens) {
 
         if (tokens.size() == 1) {
@@ -106,6 +99,33 @@ namespace nl {
         std::equal(prefix.begin(), prefix.end(), input_line.begin());
 
 
+
+    }
+    // TODO THIS APPROACHI IS NOT PORTABLE
+namespace {
+    std::string getExePath()
+    {
+        char result[ PATH_MAX ];
+        ssize_t count = readlink( "/proc/self/exe", result, PATH_MAX );
+        return std::string( result, (count > 0) ? count : 0 );
+    }
+}
+*/
+
+namespace nl {
+    namespace info {
+        string executable = "nanolisp";
+        string fullname = "Nano Lisp";
+        string version = "dancing in the dark";
+    }
+
+    void version() {
+        cout << info::executable << endl
+             << "\t" << " is " << info::fullname << " version '" << info::version << "'" << endl;
+    }
+
+    void help(int argc, char **argv) {
+        version();
     }
 
 
@@ -113,9 +133,11 @@ namespace nl {
         int line = 0;
         string input_line = "start";
         while (input_line != "end") {
-            cout << line << "# ";
+            cout << "[input|"<< line << "]";
+
+
             getline(cin, input_line);
-            string output_line = eval(input_line);
+            string output_line = nl::run_interpreter(input_line);
             cout << ">> " << output_line << endl;
             line++;
         }
@@ -125,8 +147,7 @@ namespace nl {
         if (argc == 1) {
             version();
             repl();
-        }
-        else {
+        } else {
             help(argc, argv);
 
         }
@@ -134,8 +155,7 @@ namespace nl {
     }
 }
 
+
 int main(int argc, char **argv) {
     return nl::main(argc, argv);
 }
-
-*/

@@ -146,7 +146,11 @@ ostream &operator<<(ostream &os, const nl::nl_number_expression &exp) {
 ostream &operator<<(ostream &os, const nl::nl_list_expression &exp) {
     os << "(";
     for (auto item: exp.arguments) {
-        item->print(os);
+        if (item != nullptr) {
+            item->print(os);
+        } else {
+            os << "[nullptr]";
+        }
     }
     os << ")";
     return os;
