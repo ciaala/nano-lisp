@@ -29,4 +29,7 @@ The plan is to build it directly on 17.04
 We clearly need to think about this for the in-house continuous integration.
 
 
+Docker
+======
+The plan is to setup a reusable docker image, through a series of commands or a dockerfile which we can use to run the builder and the test runner.
 
