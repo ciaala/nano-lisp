@@ -1,4 +1,7 @@
-sudo: false
+sudo: required
+
+services:
+  - docker
 
 language:
   - cpp
@@ -9,7 +12,9 @@ addons:
       - ubuntu-toolchain-r-test
 
 before_install:
-  - pip install --user cpp-coveralls
+  - docker pull ubuntu/zesty
+  - docker ps -a
+  - docker run pip install --user cpp-coveralls
 
 script:
   - mkdir build
