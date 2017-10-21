@@ -13,10 +13,10 @@ addons:
 
 before_install:
   - docker pull ubuntu:artful
-  - docker run -name 'nanolisp-dc' ubuntu:artful apt update
-  - docker run nanolisp-dc search cmake
-  - docker run nanolisp-dc apt install -y cmake
-  - docker run nanolisp-dc pip install --user cpp-coveralls
+  - docker run --name nanolisp-dc ubuntu:artful apt update
+  - docker run --name nanolisp-dc search cmake
+  - docker run --name nanolisp-dc apt install -y cmake
+  - docker run --name nanolisp-dc pip install --user cpp-coveralls
   - docker ps -a
 
 script:
