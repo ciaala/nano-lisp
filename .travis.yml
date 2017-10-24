@@ -13,7 +13,7 @@ addons:
 
 before_install:
   - docker pull ubuntu:artful
-  - docker run --name nanolisp-dc ubuntu:artful bin/bash -c 'apt update && apt search cmake && apt install -y cmake'
+  - docker run ubuntu:artful bin/bash -c 'apt update && apt search cmake && apt install -y cmake'
   - docker run --name nanolisp-dc ubuntu:artful pip install --user cpp-coveralls
   - docker ps -a
 
