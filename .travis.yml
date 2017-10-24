@@ -15,18 +15,18 @@ before_install:
   - env
   - docker pull ubuntu:artful
   - docker run -it -d --name nanolisp-dc ubuntu:artful
-  - docker ps -a
   - docker exec nanolisp-dc apt update
   - docker exec nanolisp-dc apt install -y cmake python3-pip
-  - docker exec nanolisp-dc pip install --user cpp-coveralls
+  - docker exec nanolisp-dc pip3 install --user cpp-coveralls
+  - docker cp ${TRAVIS_BUILD_DIR} nanolisp-dc:/tmp/git
+  - docker
 
-  - docker exec nanolist-dc git clone
 script:
-  - mkdir build
-  - cd build
-  - cmake ..
-  - make
-  - ./nanolisp-test
+  - docker exec mkdir build
+  - docker exec cd build
+  - docker exec cmake ..
+  - docker exec make
+  - docker exec ./nanolisp-test
 
 after_success:
   - coveralls --root .. -E ".*googletest.*" -E ".*CMakeFiles.*" -E ".*test/.*.cpp.*"
