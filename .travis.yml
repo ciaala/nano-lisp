@@ -22,11 +22,11 @@ before_install:
   - docker
 
 script:
-  - docker exec mkdir build
-  - docker exec cd build
-  - docker exec cmake ..
-  - docker exec make
-  - docker exec ./nanolisp-test
+  - docker exec nanolisp-dc mkdir build
+  - docker exec nanolisp-dc cd build
+  - docker exec nanolisp-dc cmake ..
+  - docker exec nanolisp-dc make
+  - docker exec nanolisp-dc ./nanolisp-test
 
 after_success:
   - coveralls --root .. -E ".*googletest.*" -E ".*CMakeFiles.*" -E ".*test/.*.cpp.*"
