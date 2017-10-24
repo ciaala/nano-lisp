@@ -12,13 +12,14 @@ addons:
       - ubuntu-toolchain-r-test
 
 before_install:
+  - env | grep nano
   - docker pull ubuntu:artful
-  - docker start ubuntu:artful --name nanolisp-dc
+  - docker run -it -d ubuntu:artful --name nanolisp-dc
   - docker exec nanolisp-dc apt update
   - docker exec nanolisp-dc apt install -y cmake
   - docker exec nanolisp-dc pip install --user cpp-coveralls'
   - docker ps -a
-
+  - docker exec nanolist-dc git clone
 script:
   - mkdir build
   - cd build
