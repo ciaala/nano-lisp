@@ -17,7 +17,8 @@ before_install:
   - docker run -it -d --name nanolisp-dc ubuntu:artful
   - docker ps -a
   - docker exec nanolisp-dc apt update
-  - docker exec nanolisp-dc apt install -y cmake pip
+  - docker exec nanolisp-dc apt install -y cmake
+  - docker exec nanolisp-dc apt install -y pip
   - docker exec nanolisp-dc pip install --user cpp-coveralls
 
   - docker exec nanolist-dc git clone
