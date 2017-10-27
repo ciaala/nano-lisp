@@ -45,5 +45,5 @@ TEST(INTERPRETER, SUM_OPERATION_WRONG_PARANTHESIS) {
             "(print (sum a b (sum a b) (sum a 1 2 3 4 5))";
 
     string output = "42";
-    EXPECT_TRUE(check_interpreter(program, output));
+    EXPECT_FALSE(check_interpreter(program, output));
 }

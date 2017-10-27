@@ -61,7 +61,10 @@ check_interpreter(string &program, string &expected) {
     string result = nl::run_interpreter(program);
     result = trim(result);
     if (result.compare(expected) != 0) {
-        cout << "Interpretation has failed. Expected " << expected << " received " << result << endl;
+        cout << "Interpretation has failed:" << endl
+             << "[program]  `" << program << "`" << endl
+             << "[expected] `" << expected << "`" << endl
+             << "[received] `" << result << "`" << endl;
         return false;
     } else {
         cout << program << " interpreted correctly !!!" << std::endl;

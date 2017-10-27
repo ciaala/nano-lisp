@@ -143,7 +143,7 @@ namespace nl {
     }
 
     nl_expression *nanolisp_runtime::eval(nl_expression *expression) {
-        if (expression != nullptr) {
+        if (expression == nullptr) {
             return nullptr;
         } else if (expression->isPrimitive()) {
             return expression;
